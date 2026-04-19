@@ -9,7 +9,7 @@ const PORT = parseInt(Deno.env.get("PORT") ?? "5000");
 await using pokedex = new Pokedex({
   onPort: PORT,
   backedBy: new PokemonIndexViaPokeApi(new PokeApi()),
-  styledWith: new FunDescriptionStyle(new FunTranslations()),
+  styledWith: new FunDescriptionStyle(FunTranslations.withCache()),
 });
 await pokedex.ready;
 
