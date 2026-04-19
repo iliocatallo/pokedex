@@ -3,6 +3,8 @@
     "linesWidth": 120
   },
   "imports": {
+    "@app/": "./app/",
+    "@hapi/hapi": "npm:@hapi/hapi@^21.4.8",
     "@std/assert": "jsr:@std/assert@^1.0.19"
   }
 }
