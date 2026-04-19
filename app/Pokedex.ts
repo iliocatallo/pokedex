@@ -1,12 +1,13 @@
 import { Server, ServerRoute } from "@hapi/hapi";
 import { HttpResponse } from "@app/HttpResponse.ts";
+import { PokemonIndex } from "@app/PokemonIndex.ts";
 
 export class Pokedex {
   private server: Server;
 
-  constructor(port: number) {
+  constructor(port: number, index: PokemonIndex) {
     this.server = new Server({ port });
-    this.server.route(pokemonRoute());
+    this.server.route(pokemonRoute(index));
   }
 
   get ready() {
@@ -18,16 +19,18 @@ export class Pokedex {
   }
 }
 
-function pokemonRoute(): ServerRoute {
+function pokemonRoute(index: PokemonIndex): ServerRoute {
   return {
     method: "GET",
     path: "/pokemon/{name}",
-    handler: (request, h) => {
+    handler: async (request, h) => {
       const name = request.params.name;
-      if (name === "mewtwo") {
-        return HttpResponse.ok({ name }).writeTo(h);
-      }
-      return HttpResponse.notFound().writeTo(h);
+      const pokemon = await index.lookup(name);
+      const response = pokemon
+        ? HttpResponse.ok(pokemon)
+        : HttpResponse.notFound();
+
+      return response.writeTo(h);
     },
   };
 }
