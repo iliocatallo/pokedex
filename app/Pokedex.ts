@@ -1,4 +1,5 @@
 import { Server, ServerRoute } from "@hapi/hapi";
+import { HttpResponse } from "@app/HttpResponse.ts";
 
 export class Pokedex {
   private server: Server;
@@ -23,8 +24,10 @@ function pokemonRoute(): ServerRoute {
     path: "/pokemon/{name}",
     handler: (request, h) => {
       const name = request.params.name;
-      if (name === "mewtwo") return { name };
-      return h.response().code(404);
+      if (name === "mewtwo") {
+        return HttpResponse.ok({ name }).writeTo(h);
+      }
+      return HttpResponse.notFound().writeTo(h);
     },
   };
 }
