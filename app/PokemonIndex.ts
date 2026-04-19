@@ -1,4 +1,12 @@
-import { arrayOf, boolean, null_, object, oneOf, string } from "supposedly";
+import {
+  arrayOf,
+  boolean,
+  Infer,
+  null_ as nil,
+  object,
+  oneOf,
+  string,
+} from "supposedly";
 import { PokeApi } from "@app/PokeApi.ts";
 
 export class PokemonIndex {
@@ -9,18 +17,38 @@ export class PokemonIndex {
       `/api/v2/pokemon-species/${name}`,
       PokeApiSpecies,
     );
-    return species ? { name: species.name } : undefined;
+    return species ? speciesToPokemon(species) : undefined;
   }
+}
+
+function speciesToPokemon(species: PokeApiSpecies) {
+  const description = species?.flavor_text_entries.find((e) =>
+    e.language.name === "en"
+  )?.flavor_text.replace(/[\n\f\r]+/g, " ");
+  if (!description) return undefined;
+  return {
+    name: species.name,
+    isLegendary: species.is_legendary,
+    habitat: species.habitat?.name ?? null,
+    description,
+  };
 }
 
 const PokeApiSpecies = object({
   name: string,
   is_legendary: boolean,
-  habitat: oneOf(object({ name: string }), null_),
+  habitat: oneOf(object({ name: string }), nil),
   flavor_text_entries: arrayOf(object({
     flavor_text: string,
     language: object({ name: string }),
   })),
 });
 
-type Pokemon = { name: string };
+type PokeApiSpecies = Infer<typeof PokeApiSpecies>;
+
+type Pokemon = {
+  name: string;
+  isLegendary: boolean;
+  habitat: string | null;
+  description: string;
+};
