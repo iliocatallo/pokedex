@@ -73,7 +73,7 @@ Deno.test("A species with no English description yields undefined", async () => 
       "pikachu": {
         name: "pikachu",
         is_legendary: false,
-        habitat: "forest",
+        habitat: { name: "forest" },
         flavor_text_entries: [
           { flavor_text: "FR\ndescription.", language: { name: "fr" } },
         ],
