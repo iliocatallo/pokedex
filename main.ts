@@ -1,9 +1,10 @@
 import { Pokedex } from "@app/Pokedex.ts";
 import { PokemonIndex } from "@app/PokemonIndex.ts";
+import { PokeApi } from "@app/PokeApi.ts";
 
 const PORT = parseInt(Deno.env.get("PORT") ?? "5000");
 
-await using pokedex = new Pokedex(PORT, new PokemonIndex());
+await using pokedex = new Pokedex(PORT, new PokemonIndex(new PokeApi()));
 await pokedex.ready;
 
 const SIGTERM = new Promise<void>((r) => Deno.addSignalListener("SIGTERM", r));
