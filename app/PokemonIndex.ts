@@ -9,23 +9,29 @@ import {
 } from "supposedly";
 import { PokeApi } from "@app/PokeApi.ts";
 
+export type Pokemon = {
+  name: string;
+  isLegendary: boolean;
+  habitat: string | null;
+  description: string;
+};
+
 export class PokemonIndex {
   constructor(private pokeApi: PokeApi) {}
 
   async lookup(name: string): Promise<Pokemon | undefined> {
-    const species = await this.pokeApi.get(
-      `/api/v2/pokemon-species/${name}`,
-      PokeApiSpecies,
-    );
+    const species = await this.pokeApi.getSpecies(name, PokeApiSpecies);
     return species ? speciesToPokemon(species) : undefined;
   }
 }
 
 function speciesToPokemon(species: PokeApiSpecies) {
-  const description = species?.flavor_text_entries.find((e) =>
-    e.language.name === "en"
-  )?.flavor_text.replace(/[\n\f\r]+/g, " ");
+  const entry = species.flavor_text_entries.find(({ language }) =>
+    language.name === "en"
+  );
+  const description = entry?.flavor_text.replace(/[\n\f\r]+/g, " ");
   if (!description) return undefined;
+
   return {
     name: species.name,
     isLegendary: species.is_legendary,
@@ -45,10 +51,3 @@ const PokeApiSpecies = object({
 });
 
 type PokeApiSpecies = Infer<typeof PokeApiSpecies>;
-
-type Pokemon = {
-  name: string;
-  isLegendary: boolean;
-  habitat: string | null;
-  description: string;
-};
