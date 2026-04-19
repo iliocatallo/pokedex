@@ -9,7 +9,7 @@ const PORT = 1111;
 
 Deno.test("Pokedex responds with Pokemon", async () => {
   const index = new AlwaysFoundPokemonIndex();
-  await using pokedex = new Pokedex(PORT, index);
+  await using pokedex = new Pokedex({ onPort: PORT, backedBy: index });
   await pokedex.ready;
 
   assertEquals(
@@ -19,7 +19,10 @@ Deno.test("Pokedex responds with Pokemon", async () => {
 });
 
 Deno.test("Pokedex responds with not found when the Pokemon does not exist", async () => {
-  await using pokedex = new Pokedex(PORT, new EmptyPokemonIndex());
+  await using pokedex = new Pokedex({
+    onPort: PORT,
+    backedBy: new EmptyPokemonIndex(),
+  });
   await pokedex.ready;
 
   assertEquals(

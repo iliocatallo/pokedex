@@ -5,7 +5,7 @@ import { PokemonIndex } from "@app/PokemonIndex.ts";
 export class Pokedex {
   private server: Server;
 
-  constructor(port: number, index: PokemonIndex) {
+  constructor({ onPort: port, backedBy: index }: PokedexOpts) {
     this.server = new Server({ port });
     this.server.route(pokemonRoute(index));
   }
@@ -34,3 +34,8 @@ function pokemonRoute(index: PokemonIndex): ServerRoute {
     },
   };
 }
+
+type PokedexOpts = {
+  onPort: number;
+  backedBy: PokemonIndex;
+};
