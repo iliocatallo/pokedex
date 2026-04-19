@@ -1,5 +1,7 @@
+import { DescriptionStyle } from "@app/DescriptionStyle.ts";
+
 export interface PokemonIndex {
-  lookup(name: string): Promise<Pokemon | undefined>;
+  lookup(name: string, style?: DescriptionStyle): Promise<Pokemon | undefined>;
 }
 
 export type Pokemon = {

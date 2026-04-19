@@ -1,12 +1,14 @@
 import { Pokedex } from "@app/Pokedex.ts";
 import { PokemonIndexViaPokeApi } from "@app/PokemonIndexViaPokeApi.ts";
 import { PokeApi } from "@app/PokeApi.ts";
+import { DescriptionStyle } from "@app/DescriptionStyle.ts";
 
 const PORT = parseInt(Deno.env.get("PORT") ?? "5000");
 
 await using pokedex = new Pokedex({
   onPort: PORT,
   backedBy: new PokemonIndexViaPokeApi(new PokeApi()),
+  styledWith: DescriptionStyle.verbatim,
 });
 await pokedex.ready;
 

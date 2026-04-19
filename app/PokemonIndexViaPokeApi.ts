@@ -9,13 +9,18 @@ import {
   string,
   Type,
 } from "supposedly";
+import { DescriptionStyle } from "@app/DescriptionStyle.ts";
 
 export class PokemonIndexViaPokeApi implements PokemonIndex {
   constructor(private pokeApi: PokeApiLike) {}
 
-  async lookup(name: string): Promise<Pokemon | undefined> {
+  async lookup(
+    name: string,
+    style: DescriptionStyle = DescriptionStyle.verbatim,
+  ): Promise<Pokemon | undefined> {
     const species = await this.pokeApi.getSpecies(name, PokeApiSpecies);
-    return species ? speciesToPokemon(species) : undefined;
+    const pokemon = species ? speciesToPokemon(species) : undefined;
+    return pokemon ? await style.applyTo(pokemon) : undefined;
   }
 }
 
