@@ -1,15 +1,11 @@
-import { Server } from "@hapi/hapi";
+import { Server, ServerRoute } from "@hapi/hapi";
 
 export class Pokedex {
   private server: Server;
 
   constructor(port: number) {
     this.server = new Server({ port });
-    this.server.route({
-      method: "GET",
-      path: "/pokemon/mewtwo",
-      handler: () => ({ name: "mewtwo" }),
-    });
+    this.server.route(pokemonRoute());
   }
 
   get ready() {
@@ -19,4 +15,16 @@ export class Pokedex {
   async [Symbol.asyncDispose]() {
     await this.server.stop();
   }
+}
+
+function pokemonRoute(): ServerRoute {
+  return {
+    method: "GET",
+    path: "/pokemon/{name}",
+    handler: (request, h) => {
+      const name = request.params.name;
+      if (name === "mewtwo") return { name };
+      return h.response().code(404);
+    },
+  };
 }
