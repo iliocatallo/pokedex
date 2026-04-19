@@ -1,0 +1,12 @@
+name: CI
+
+on: push
+jobs:
+  deploy:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.7.x
+      - run: deno test --allow-net --allow-env --allow-sys
