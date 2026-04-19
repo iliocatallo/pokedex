@@ -1,6 +1,6 @@
 import { isValid } from "supposedly";
 import { Type } from "supposedly";
-import { PokeApiLike } from "@app/PokemonIndex.ts";
+import { PokeApiLike } from "@app/PokemonIndexViaPokeApi.ts";
 
 export class StubPokeApi implements PokeApiLike {
   constructor(private samples: Record<string, unknown>) {}

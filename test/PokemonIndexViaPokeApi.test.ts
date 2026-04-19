@@ -1,9 +1,9 @@
-import { PokemonIndex } from "@app/PokemonIndex.ts";
+import { PokemonIndexViaPokeApi } from "@app/PokemonIndexViaPokeApi.ts";
 import { StubPokeApi } from "./StubPokeApi.ts";
 import { assertEquals, assertExists } from "@std/assert";
 
 Deno.test("A PokeAPI species is mapped to a Pokemon", async () => {
-  const index = new PokemonIndex(
+  const index = new PokemonIndexViaPokeApi(
     new StubPokeApi({
       "mewtwo": {
         name: "mewtwo",
@@ -28,7 +28,7 @@ Deno.test("A PokeAPI species is mapped to a Pokemon", async () => {
 });
 
 Deno.test("Newlines in the description are replaced with spaces", async () => {
-  const index = new PokemonIndex(
+  const index = new PokemonIndexViaPokeApi(
     new StubPokeApi({
       "mewtwo": {
         name: "mewtwo",
@@ -48,7 +48,7 @@ Deno.test("Newlines in the description are replaced with spaces", async () => {
 });
 
 Deno.test("A species with no habitat is mapped with habitat null", async () => {
-  const index = new PokemonIndex(
+  const index = new PokemonIndexViaPokeApi(
     new StubPokeApi({
       "garchomp": {
         name: "garchomp",
@@ -68,7 +68,7 @@ Deno.test("A species with no habitat is mapped with habitat null", async () => {
 });
 
 Deno.test("A species with no English description yields undefined", async () => {
-  const index = new PokemonIndex(
+  const index = new PokemonIndexViaPokeApi(
     new StubPokeApi({
       "pikachu": {
         name: "pikachu",
@@ -85,7 +85,9 @@ Deno.test("A species with no English description yields undefined", async () => 
 });
 
 Deno.test("A species that does not exist yields undefined", async () => {
-  const index = new PokemonIndex(new StubPokeApi({ "rony": undefined }));
+  const index = new PokemonIndexViaPokeApi(
+    new StubPokeApi({ "rony": undefined }),
+  );
 
   assertEquals(await index.lookup("rony"), undefined);
 });

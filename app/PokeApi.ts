@@ -1,6 +1,6 @@
 import { Type } from "supposedly";
 import { isValid } from "supposedly";
-import { PokeApiLike } from "@app/PokemonIndex.ts";
+import { PokeApiLike } from "@app/PokemonIndexViaPokeApi.ts";
 
 export class PokeApi implements PokeApiLike {
   async getSpecies<T>(species: string, type: Type<T>) {
