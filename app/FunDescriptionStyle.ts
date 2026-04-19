@@ -5,14 +5,14 @@ export class FunDescriptionStyle implements DescriptionStyle {
   constructor(private funTranslations: FunTranslationsLike) {}
 
   async applyTo(pokemon: Pokemon): Promise<Pokemon> {
-    if (pokemon.isLegendary) {
-      const description = await this.funTranslations.translate(
-        "yoda",
-        pokemon.description,
-      );
-      return { ...pokemon, description: description ?? pokemon.description };
-    }
-    return pokemon;
+    const style = (pokemon.isLegendary || pokemon.habitat === "cave")
+      ? "yoda"
+      : "shakespeare";
+    const description = await this.funTranslations.translate(
+      style,
+      pokemon.description,
+    );
+    return { ...pokemon, description: description ?? pokemon.description };
   }
 }
 
