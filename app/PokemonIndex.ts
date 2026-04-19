@@ -1,21 +1,26 @@
+import { arrayOf, boolean, null_, object, oneOf, string } from "supposedly";
 import { PokeApi } from "@app/PokeApi.ts";
 
 export class PokemonIndex {
   constructor(private pokeApi: PokeApi) {}
 
   async lookup(name: string): Promise<Pokemon | undefined> {
-    const species = await this.pokeApi.get(`/api/v2/pokemon-species/${name}`);
-    if (!hasRequiredFields(species)) {
-      return undefined;
-    }
-
-    return { name: species.name };
+    const species = await this.pokeApi.get(
+      `/api/v2/pokemon-species/${name}`,
+      PokeApiSpecies,
+    );
+    return species ? { name: species.name } : undefined;
   }
 }
 
-// deno-lint-ignore no-explicit-any
-function hasRequiredFields(species: any): species is { name: string } {
-  return species && "name" in species && typeof species.name === "string";
-}
+const PokeApiSpecies = object({
+  name: string,
+  is_legendary: boolean,
+  habitat: oneOf(object({ name: string }), null_),
+  flavor_text_entries: arrayOf(object({
+    flavor_text: string,
+    language: object({ name: string }),
+  })),
+});
 
 type Pokemon = { name: string };

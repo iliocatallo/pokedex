@@ -3,7 +3,8 @@
   "specifiers": {
     "jsr:@std/assert@^1.0.19": "1.0.19",
     "jsr:@std/internal@^1.0.12": "1.0.12",
-    "npm:@hapi/hapi@^21.4.8": "21.4.8"
+    "npm:@hapi/hapi@^21.4.8": "21.4.8",
+    "npm:supposedly@^6.0.3": "6.0.3"
   },
   "jsr": {
     "@std/assert@1.0.19": {
@@ -236,12 +237,16 @@
     },
     "mime-db@1.52.0": {
       "integrity": "sha512-sPU4uV7dYlvtWJxwwxHD0PuihVNiE7TyAbQ5SWxDCB9mUYvOgroQOwYQQOKPJ8CIbE+1ETVlOoK1UC2nU3gYvg=="
+    },
+    "supposedly@6.0.3": {
+      "integrity": "sha512-Xot3K/xCHQxU6MPIov1Oe7KiiEqwIMaWre8PZWn4uNG47itiYKtVcFy82VThLm9ha/s0s1cYHTVRcKD0PkK1fw=="
     }
   },
   "workspace": {
     "dependencies": [
       "jsr:@std/assert@^1.0.19",
-      "npm:@hapi/hapi@^21.4.8"
+      "npm:@hapi/hapi@^21.4.8",
+      "npm:supposedly@^6.0.3"
     ]
   }
 }
