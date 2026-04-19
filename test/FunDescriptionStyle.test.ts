@@ -10,7 +10,7 @@ Deno.test("The description of a legendary Pokémon is styled with the Yoda trans
     name: "mewtwo",
     isLegendary: true,
     habitat: "rare",
-    description: "legendaru pokemon",
+    description: "legendary pokemon",
   });
 
   assertEquals(api.askedStyle, "yoda");
