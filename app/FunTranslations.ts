@@ -1,6 +1,8 @@
 import { FunTranslationsLike } from "@app/FunDescriptionStyle.ts";
 import { retry } from "@std/async";
 
+const REQUEST_TIMEOUT_MS = 6_000;
+
 export class FunTranslations implements FunTranslationsLike {
   static withCache(): FunTranslationsLike {
     return new CachedFunTranslations(new FunTranslations());
@@ -18,6 +20,7 @@ export class FunTranslations implements FunTranslationsLike {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ text }),
+            signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
           },
         );
         if (response.status === 429) return undefined;
