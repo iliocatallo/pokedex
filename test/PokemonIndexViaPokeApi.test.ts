@@ -1,8 +1,8 @@
 import { PokemonIndexViaPokeApi } from "@app/PokemonIndexViaPokeApi.ts";
-import { StubPokeApi } from "./StubPokeApi.ts";
+import { StubPokeApi } from "./testdoubles/StubPokeApi.ts";
 import { assertEquals, assertExists } from "@std/assert";
-import { HealthyPokeApi } from "./HealthyPokeApi.ts";
-import { UnhealthyPokeApi } from "./UnhealthyPokeApi.ts";
+import { HealthyPokeApi } from "./testdoubles/HealthyPokeApi.ts";
+import { UnhealthyPokeApi } from "./testdoubles/UnhealthyPokeApi.ts";
 
 Deno.test("A PokeAPI species is mapped to a Pokemon", async () => {
   const index = new PokemonIndexViaPokeApi(

@@ -2,11 +2,11 @@ import { assertEquals } from "@std/assert";
 import { Pokedex } from "@app/Pokedex.ts";
 import { HttpResponse } from "@app/HttpResponse.ts";
 import { Http } from "./Http.ts";
-import { EmptyPokemonIndex } from "./EmptyPokemonIndex.ts";
-import { AlwaysFoundPokemonIndex } from "./AlwaysFoundPokemonIndex.ts";
-import { WhateverDescriptionStyle } from "./WhateverDescriptionStyle.ts";
-import { HealthyPokemonIndex } from "./HealthyPokemonIndex.ts";
-import { UnhealthyPokemonIndex } from "./UnhealthyPokemonIndex.ts";
+import { EmptyPokemonIndex } from "./testdoubles/EmptyPokemonIndex.ts";
+import { AlwaysFoundPokemonIndex } from "./testdoubles/AlwaysFoundPokemonIndex.ts";
+import { WhateverDescriptionStyle } from "./testdoubles/WhateverDescriptionStyle.ts";
+import { HealthyPokemonIndex } from "./testdoubles/HealthyPokemonIndex.ts";
+import { UnhealthyPokemonIndex } from "./testdoubles/UnhealthyPokemonIndex.ts";
 
 const PORT = 1111;
 

@@ -1,7 +1,7 @@
 import { assertEquals } from "@std/assert";
 import { FunDescriptionStyle } from "@app/FunDescriptionStyle.ts";
-import { MockFunTranslations } from "./MockFunTranslations.ts";
-import { UnavailableFunTranslations } from "./UnavailableFunTranslations.ts";
+import { MockFunTranslations } from "./testdoubles/MockFunTranslations.ts";
+import { UnavailableFunTranslations } from "./testdoubles/UnavailableFunTranslations.ts";
 
 Deno.test("The description of a legendary Pokémon is styled with the Yoda translation", async () => {
   const api = new MockFunTranslations();
