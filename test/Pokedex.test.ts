@@ -111,7 +111,9 @@ Deno.test("Pokedex passes error info to support when a handler throws", async ()
   await using pokedex = new Pokedex({
     onPort: PORT,
     monitoredBy: support,
-    backedBy: new ThrowingPokemonIndex({ throws: new Error("Something went wrong") }),
+    backedBy: new ThrowingPokemonIndex({
+      throws: new Error("Something went wrong"),
+    }),
   });
   await pokedex.ready;
 
