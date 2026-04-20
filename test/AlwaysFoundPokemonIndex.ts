@@ -10,4 +10,8 @@ export class AlwaysFoundPokemonIndex implements PokemonIndex {
       description: "description",
     });
   }
+
+  isReady(): Promise<boolean> {
+    return Promise.resolve(true);
+  }
 }

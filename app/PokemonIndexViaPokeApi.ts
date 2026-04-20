@@ -22,6 +22,10 @@ export class PokemonIndexViaPokeApi implements PokemonIndex {
     const pokemon = species ? speciesToPokemon(species) : undefined;
     return pokemon ? await style.applyTo(pokemon) : undefined;
   }
+
+  isReady(): Promise<boolean> {
+    return this.pokeApi.isReady();
+  }
 }
 
 function speciesToPokemon(species: Infer<typeof PokeApiSpecies>) {
@@ -41,6 +45,7 @@ function speciesToPokemon(species: Infer<typeof PokeApiSpecies>) {
 
 export interface PokeApiLike {
   getSpecies<T>(species: string, type: Type<T>): Promise<T | undefined>;
+  isReady(): Promise<boolean>;
 }
 
 const PokeApiSpecies = object({

@@ -1,6 +1,8 @@
 import { PokemonIndexViaPokeApi } from "@app/PokemonIndexViaPokeApi.ts";
 import { StubPokeApi } from "./StubPokeApi.ts";
 import { assertEquals, assertExists } from "@std/assert";
+import { HealthyPokeApi } from "./HealthyPokeApi.ts";
+import { UnhealthyPokeApi } from "./UnhealthyPokeApi.ts";
 
 Deno.test("A PokeAPI species is mapped to a Pokemon", async () => {
   const index = new PokemonIndexViaPokeApi(
@@ -90,4 +92,16 @@ Deno.test("A species that does not exist yields undefined", async () => {
   );
 
   assertEquals(await index.lookup("rony"), undefined);
+});
+
+Deno.test("The index is ready when PokeAPI is ready", async () => {
+  const index = new PokemonIndexViaPokeApi(new HealthyPokeApi());
+
+  assertEquals(await index.isReady(), true);
+});
+
+Deno.test("The index is not ready when PokeAPI is not ready", async () => {
+  const index = new PokemonIndexViaPokeApi(new UnhealthyPokeApi());
+
+  assertEquals(await index.isReady(), false);
 });

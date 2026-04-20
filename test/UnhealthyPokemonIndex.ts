@@ -1,11 +1,11 @@
 import { PokemonIndex } from "@app/PokemonIndex.ts";
 
-export class EmptyPokemonIndex implements PokemonIndex {
+export class UnhealthyPokemonIndex implements PokemonIndex {
   lookup(): Promise<undefined> {
     return Promise.resolve(undefined);
   }
 
   isReady(): Promise<boolean> {
-    return Promise.resolve(true);
+    return Promise.resolve(false);
   }
 }

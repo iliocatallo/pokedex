@@ -14,6 +14,13 @@ export class HttpResponse {
     return new HttpResponse(404);
   }
 
+  static serviceUnavailable(json: Json) {
+    return new HttpResponse(503, {
+      contentType: "application/json; charset=utf-8",
+      content: JSON.stringify(json),
+    });
+  }
+
   writeTo(h: ResponseToolkit) {
     const response = this.body
       ? h.response(this.body.content).type(this.body.contentType)

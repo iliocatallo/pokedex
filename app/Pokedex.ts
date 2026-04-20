@@ -14,6 +14,7 @@ export class Pokedex {
     }: PokedexOpts,
   ) {
     this.server = new Server({ port });
+    this.server.route(healthRoute(index));
     this.server.route(pokemonRoute(index));
     this.server.route(pokemonTranslatedRoute(index, style));
   }
@@ -25,6 +26,19 @@ export class Pokedex {
   async [Symbol.asyncDispose]() {
     await this.server.stop();
   }
+}
+
+function healthRoute(index: PokemonIndex): ServerRoute {
+  return {
+    method: "GET",
+    path: "/health",
+    handler: async (_, h) => {
+      const response = await index.isReady()
+        ? HttpResponse.ok({ status: "ok" })
+        : HttpResponse.serviceUnavailable({ status: "unavailable" });
+      return response.writeTo(h);
+    },
+  };
 }
 
 function pokemonRoute(index: PokemonIndex): ServerRoute {

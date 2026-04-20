@@ -5,6 +5,8 @@ import { Http } from "./Http.ts";
 import { EmptyPokemonIndex } from "./EmptyPokemonIndex.ts";
 import { AlwaysFoundPokemonIndex } from "./AlwaysFoundPokemonIndex.ts";
 import { WhateverDescriptionStyle } from "./WhateverDescriptionStyle.ts";
+import { HealthyPokemonIndex } from "./HealthyPokemonIndex.ts";
+import { UnhealthyPokemonIndex } from "./UnhealthyPokemonIndex.ts";
 
 const PORT = 1111;
 
@@ -58,5 +60,31 @@ Deno.test("Pokedex responds with not found when the translated Pokemon does not 
   assertEquals(
     await Http.callOn(PORT, "/pokemon/translated/rony"),
     HttpResponse.notFound(),
+  );
+});
+
+Deno.test("Pokedex responds with “ok” on the health endpoint when index is ready", async () => {
+  await using pokedex = new Pokedex({
+    onPort: PORT,
+    backedBy: new HealthyPokemonIndex(),
+  });
+  await pokedex.ready;
+
+  assertEquals(
+    await Http.callOn(PORT, "/health"),
+    HttpResponse.ok({ status: "ok" }),
+  );
+});
+
+Deno.test("Pokedex responds with “unavailable” on the health endpoint when index is not ready", async () => {
+  await using pokedex = new Pokedex({
+    onPort: PORT,
+    backedBy: new UnhealthyPokemonIndex(),
+  });
+  await pokedex.ready;
+
+  assertEquals(
+    await Http.callOn(PORT, "/health"),
+    HttpResponse.serviceUnavailable({ status: "unavailable" }),
   );
 });

@@ -27,6 +27,16 @@ export class PokeApi implements PokeApiLike {
       return undefined;
     }
   }
+
+  async isReady(): Promise<boolean> {
+    try {
+      const response = await fetch("https://pokeapi.co/api/v2/");
+      await response.body?.cancel();
+      return response.ok;
+    } catch {
+      return false;
+    }
+  }
 }
 
 class TransientHttpError extends Error {

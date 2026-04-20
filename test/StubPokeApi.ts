@@ -11,4 +11,8 @@ export class StubPokeApi implements PokeApiLike {
       ? Promise.resolve(sample)
       : Promise.resolve(undefined);
   }
+
+  isReady(): Promise<boolean> {
+    return Promise.resolve(true);
+  }
 }
