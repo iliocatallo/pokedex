@@ -8,6 +8,7 @@ import { WhateverDescriptionStyle } from "./testdoubles/WhateverDescriptionStyle
 import { HealthyPokemonIndex } from "./testdoubles/HealthyPokemonIndex.ts";
 import { UnhealthyPokemonIndex } from "./testdoubles/UnhealthyPokemonIndex.ts";
 import { RecordingSupport } from "./testdoubles/RecordingSupport.ts";
+import { ThrowingPokemonIndex } from "./testdoubles/ThrowingPokemonIndex.ts";
 
 const PORT = 1111;
 
@@ -102,5 +103,20 @@ Deno.test("Pokedex passes request info to support", async () => {
   assertObjectMatch(
     await support.theLogFor(() => Http.callOn(PORT, "/pokemon/rony")),
     { method: "GET", path: "/pokemon/rony", statusCode: 404 },
+  );
+});
+
+Deno.test("Pokedex passes error info to support when a handler throws", async () => {
+  const support = new RecordingSupport();
+  await using pokedex = new Pokedex({
+    onPort: PORT,
+    monitoredBy: support,
+    backedBy: new ThrowingPokemonIndex({ throws: new Error("Something went wrong") }),
+  });
+  await pokedex.ready;
+
+  assertObjectMatch(
+    await support.theErrorLogFor(() => Http.callOn(PORT, "/pokemon/rony")),
+    { method: "GET", path: "/pokemon/rony", error: "Something went wrong" },
   );
 });

@@ -1,4 +1,9 @@
-import { ResponseEventHandler, Server, ServerRoute } from "@hapi/hapi";
+import {
+  Lifecycle,
+  ResponseEventHandler,
+  Server,
+  ServerRoute,
+} from "@hapi/hapi";
 import { HttpResponse } from "@app/HttpResponse.ts";
 import { PokemonIndex } from "@app/PokemonIndex.ts";
 import { DescriptionStyle } from "@app/DescriptionStyle.ts";
@@ -20,6 +25,7 @@ export class Pokedex {
     this.server.route(pokemonRoute(index));
     this.server.route(pokemonTranslatedRoute(index, style));
     this.server.events.on("response", logResponse(support));
+    this.server.ext("onPreResponse", logError(support));
   }
 
   get ready() {
@@ -89,6 +95,20 @@ function logResponse(support: Support): ResponseEventHandler {
       statusCode: response.statusCode,
       elapsedMs: Date.now() - request.info.received,
     });
+  };
+}
+
+function logError(support: Support): Lifecycle.Method {
+  return (request, h) => {
+    if (request.response instanceof Error) {
+      support.onError({
+        id: request.info.id,
+        method: request.method.toUpperCase(),
+        path: request.path,
+        error: request.response.message,
+      });
+    }
+    return h.continue;
   };
 }
 
