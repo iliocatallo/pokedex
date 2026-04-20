@@ -3,6 +3,7 @@ import { PokemonIndexViaPokeApi } from "@app/PokemonIndexViaPokeApi.ts";
 import { PokeApi } from "@app/PokeApi.ts";
 import { FunDescriptionStyle } from "@app/FunDescriptionStyle.ts";
 import { FunTranslations } from "@app/FunTranslations.ts";
+import { SupportOnCall } from "@app/SupportOnCall.ts";
 
 const PORT = parseInt(Deno.env.get("PORT") ?? "5000");
 
@@ -10,6 +11,7 @@ await using pokedex = new Pokedex({
   onPort: PORT,
   backedBy: new PokemonIndexViaPokeApi(new PokeApi()),
   styledWith: new FunDescriptionStyle(FunTranslations.withCache()),
+  monitoredBy: new SupportOnCall(),
 });
 await pokedex.ready;
 
